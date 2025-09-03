@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玉米病害检测系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#22c55e', // 绿色主色调，代表农业和健康
+                        secondary: '#f97316', // 橙色辅助色，代表警告和病害
+                        dark: '#1e293b',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            }
+            .bg-glass {
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+            }
+            .shadow-card {
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-light text-dark min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-md fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-leaf text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-dark">玉米病害检测系统</h1>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-dark hover:text-primary transition-custom font-medium">首页</a>
+                <a href="#features" class="text-dark hover:text-primary transition-custom font-medium">功能</a>
+                <a href="#detection" class="text-dark hover:text-primary transition-custom font-medium">检测</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <button class="hidden md:block px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom">
+                    <i class="fa fa-sign-in mr-2"></i>登录
+                </button>
+                <button class="md:hidden text-dark text-xl" id="menu-toggle">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div class="md:hidden bg-white shadow-lg absolute w-full left-0 top-full transform -translate-y-full opacity-0 transition-all duration-300 invisible" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#home" class="text-dark hover:text-primary transition-custom font-medium py-2">首页</a>
+                <a href="#features" class="text-dark hover:text-primary transition-custom font-medium py-2">功能</a>
+                <a href="#detection" class="text-dark hover:text-primary transition-custom font-medium py-2">检测</a>
+                <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom">
+                    <i class="fa fa-sign-in mr-2"></i>登录
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow pt-16">
+        <!-- 英雄区 -->
+        <section id="home" class="relative bg-gradient-to-br from-primary/10 to-secondary/10 py-20 md:py-32 overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-full h-full bg-[url('https://picsum.photos/id/145/1920/1080')] bg-cover bg-center"></div>
+            </div>
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="max-w-3xl">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-6">
+                        精准识别玉米病害<br>
+                        <span class="text-primary">助力农业丰收</span>
+                    </h1>
+                    <p class="text-[clamp(1rem,2vw,1.25rem)] text-gray-700 mb-8 max-w-2xl">
+                        利用先进的深度学习技术，我们的系统能够快速、准确地识别玉米叶片上的各种病害，帮助您及时采取防治措施，提高农作物产量。
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-lg">
+                            <i class="fa fa-camera mr-2"></i>开始检测
+                        </button>
+                        <button class="px-8 py-3 bg-white text-primary border border-primary rounded-lg hover:bg-primary/5 transition-custom shadow-md hover:shadow-lg transform hover:-translate-y-1 font-medium text-lg">
+                            <i class="fa fa-play-circle mr-2"></i>观看演示
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 波浪装饰 -->
+            <div class="absolute bottom-0 left-0 w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" class="w-full h-auto">
+                    <path fill="#ffffff" fill-opacity="1" d="M0,32L80,42.7C160,53,320,75,480,74.7C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- 病害检测区域 -->
+        <section id="detection" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">玉米病害检测</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">上传玉米叶片图像，我们的系统将自动分析并识别可能存在的病害，提供详细的检测报告和防治建议。</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- 左侧：上传区域 -->
+                    <div class="lg:col-span-1 bg-white rounded-xl shadow-card p-6 border border-gray-100">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4">上传叶片图像</h3>
+                            <div id="drop-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-custom">
+                                <i class="fa fa-cloud-upload text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-500 mb-2">拖放图像到此处或</p>
+                                <button class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-custom">
+                                    选择文件
+                                </button>
+                                <input type="file" id="file-input" class="hidden" accept="image/*">
+                                <p class="text-xs text-gray-400 mt-2">支持 JPG, PNG, WEBP 格式，最大 10MB</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4">检测设置</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">检测模型</label>
+                                    <select id="model-select" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                        <option value="custom">自定义模型</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 mb-2">病害类型</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox text-primary h-5 w-5" checked>
+                                            <span class="ml-2 text-gray-700">大斑病</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox text-primary h-5 w-5" checked>
+                                            <span class="ml-2 text-gray-700">小斑病</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox text-primary h-5 w-5" checked>
+                                            <span class="ml-2 text-gray-700">锈病</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox text-primary h-5 w-5" checked>
+                                            <span class="ml-2 text-gray-700">灰斑病</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox text-primary h-5 w-5" checked>
+                                            <span class="ml-2 text-gray-700">茎基腐病</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 mb-2">置信度阈值</label>
+                                    <input type="range" id="confidence-threshold" min="0" max="100" value="70" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary">
+                                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                        <span>低</span>
+                                        <span id="threshold-value">70%</span>
+                                        <span>高</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="detect-btn" class="w-full py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom shadow-md hover:shadow-lg flex items-center justify-center space-x-2 font-medium">
+                            <i class="fa fa-search"></i>
+                            <span>开始检测</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 中间：图像预览 -->
+                    <div class="lg:col-span-1 bg-white rounded-xl shadow-card p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold mb-4">图像预览</h3>
+                        <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative" id="image-preview">
+                            <img src="https://picsum.photos/id/145/600/600" alt="玉米叶片样本" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center bg-dark/50 opacity-0 hover:opacity-100 transition-custom">
+                                <button class="text-white bg-primary p-3 rounded-full">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-medium mb-2">图像调整</h4>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button class="p-2 border border-gray-200 rounded-lg hover:border-primary hover:text-primary transition-custom">
+                                    <i class="fa fa-rotate-left mr-1"></i> 旋转
+                                </button>
+                                <button class="p-2 border border-gray-200 rounded-lg hover:border-primary hover:text-primary transition-custom">
+                                    <i class="fa fa-crop mr-1"></i> 裁剪
+                                </button>
+                                <button class="p-2 border border-gray-200 rounded-lg hover:border-primary hover:text-primary transition-custom">
+                                    <i class="fa fa-sliders mr-1"></i> 增强
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 检测结果预览 -->
+                        <div class="mt-6 hidden" id="detection-result-preview">
+                            <h4 class="font-medium mb-2">检测结果预览</h4>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-medium">检测到 <span id="disease-count">0</span> 种病害</span>
+                                    <span class="text-sm text-gray-500">置信度: <span id="overall-confidence">0%</span></span>
+                                </div>
+                                <div id="preview-diseases-list" class="space-y-2">
+                                    <!-- 动态生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：检测结果 -->
+                    <div class="lg:col-span-1 bg-white rounded-xl shadow-card p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold mb-4">检测报告</h3>
+                        
+                        <!-- 加载状态 -->
+                        <div class="text-center py-12" id="loading-state">
+                            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+                            <p class="mt-4 text-gray-600">正在分析图像，请稍候...</p>
+                            <p class="text-sm text-gray-400 mt-2">这可能需要几秒钟时间</p>
+                        </div>
+                        
+                        <!-- 结果详情 -->
+                        <div class="hidden" id="result-details">
+                            <div id="disease-results" class="space-y-6">
+                                <!-- 动态生成 -->
+                            </div>
+                            
+                            <div class="border-t border-gray-100 pt-6">
+                                <h5 class="font-medium mb-3">病害发展趋势预测</h5>
+                                <div class="h-60">
+                                    <canvas id="disease-trend-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 错误状态 -->
+                        <div class="text-center py-12 hidden" id="error-state">
+                            <i class="fa fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                            <h4 class="text-lg font-semibold text-red-700 mb-2">检测失败</h4>
+                            <p class="text-gray-600 mb-4" id="error-message">未能获取检测结果，请重试。</p>
+                            <button id="retry-btn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom">
+                                重试
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特点区域 -->
+        <section id="features" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">系统功能特点</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">我们的玉米病害检测系统集成了先进的AI技术，为您提供全方位的农作物健康监测解决方案。</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 功能卡片 1 -->
+                    <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-bolt text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">快速检测</h3>
+                        <p class="text-gray-600">基于高性能检测算法，仅需数秒即可完成对玉米叶片的全面分析，快速识别病害类型和感染程度。</p>
+                    </div>
+                    
+                    <!-- 功能卡片 2 -->
+                    <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-search-plus text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">高精度识别</h3>
+                        <p class="text-gray-600">采用先进的深度学习模型，能够准确识别玉米常见的十余种病害，误检率低于1%。</p>
+                    </div>
+                    
+                    <!-- 功能卡片 3 -->
+                    <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-line-chart text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">趋势分析</h3>
+                        <p class="text-gray-600">系统能够记录和分析病害发展趋势，基于历史数据预测病害扩散速度，帮助您提前制定防治计划。</p>
+                    </div>
+                    
+                    <!-- 功能卡片 4 -->
+                    <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-book text-primary text-2xl"></i>

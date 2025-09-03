@@ -1,0 +1,8 @@
+train: D:\yolo\yolov12\dataset\train  # train images (relative to 'path') 4 images
+val: D:\yolo\yolov12\dataset\val  # val images (relative to 'path') 4 images
+
+nc: 3
+
+# class names
+names: ['xiubing','banbing','healthy']# xiubing,banbing,healthy
+
