@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 <div align="center">
@@ -162,3 +163,7 @@ The code is based on [ultralytics](https://github.com/ultralytics/ultralytics). 
 }
 ```
 
+=======
+# YOLOV12-based-crop-disease-identification-system（Project-reproduction）
+This is a YOLOV12-based crop disease identification system for the identification of corn diseases (including spot, rust, etc.).
+>>>>>>> 0db5c57c31b71d791fc807e5cec76d939966e759
