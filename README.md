@@ -63,9 +63,6 @@ YOLOV12-based-crop-disease-identification-system/
 
 ## 参考文献
 
-- [YOLOv12 官方论文](https://arxiv.org/abs/xxxx.xxxxx)
-- [PyTorch 官方文档](https://pytorch.org/)
-- [OpenCV 官方文档](https://opencv.org/)
 
 ## 联系方式
 
