@@ -64,11 +64,6 @@ YOLOV12-based-crop-disease-identification-system/
 ## 参考文献
 
 
-## 联系方式
-
-如有问题或建议，欢迎通过 Issues 或邮件联系作者。
-
----
 
 **致力于推动智能农业发展，提升病害防控能力！**
 
