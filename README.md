@@ -61,9 +61,6 @@ YOLOV12-based-crop-disease-identification-system/
 └── README.md              # 项目说明文件
 ```
 
-## 参考文献
-
-
 
 **致力于推动智能农业发展，提升病害防控能力！**
 
