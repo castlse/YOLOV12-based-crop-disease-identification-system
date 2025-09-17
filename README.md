@@ -49,7 +49,7 @@
    python detect.py --img-path ./test_images
    ```
 
-## 文件结构
+文件结构
 
 ```
 YOLOV12-based-crop-disease-identification-system/
