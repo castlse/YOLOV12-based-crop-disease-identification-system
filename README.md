@@ -1,4 +1,4 @@
-# YOLOV12-based Crop Disease Identification System
+# YOLOV12-based Crop Disease Identification System（未修改）
 
 
 本项目是一个基于 YOLOV12 的玉米病害识别系统，能够有效识别玉米常见病害（如斑点病、锈病等）。本系统结合了最新的目标检测技术，旨在为农业生产提供智能化的病害监测解决方案。
